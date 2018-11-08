@@ -1,0 +1,38 @@
+info_begin
+format: 1
+mpd_version: 0.18.23
+fs_charset: UTF-8
+tag: Artist
+tag: ArtistSort
+tag: Album
+tag: AlbumArtist
+tag: AlbumArtistSort
+tag: Title
+tag: Track
+tag: Name
+tag: Genre
+tag: Date
+tag: Composer
+tag: Performer
+tag: Disc
+tag: MUSICBRAINZ_ARTISTID
+tag: MUSICBRAINZ_ALBUMID
+tag: MUSICBRAINZ_ALBUMARTISTID
+tag: MUSICBRAINZ_TRACKID
+info_end
+song_begin: 20181106_151105.mp3
+Time: 13
+mtime: 1541488267
+song_end
+song_begin: start.mp3
+Time: 1
+mtime: 1529029940
+song_end
+song_begin: stop.mp3
+Time: 1
+mtime: 1529029945
+song_end
+song_begin: welcome.mp3
+Time: 2
+mtime: 1529029952
+song_end

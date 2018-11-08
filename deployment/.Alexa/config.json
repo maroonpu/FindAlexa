@@ -1,0 +1,11 @@
+{
+    "access_token": "Atza|IwEBIHRHBlngwqk7irOf9jo8AWt3O__46uu71svAAA_YhAmtvixC9cVON30R3HheSwW5zD76CvSITPQhApXigPE4flDCq2I2ULwgGEdaVAggKBhGhuzWu7Xk06zl9ZqIDnYWz_JCe59FrEKXFcNhoAmUI7zo9NxNuZZs_vFO4C-bnt525yOmx81_9BSsKDFm5466ZSHbj-eqHQcP2mPEqiwe0LW0aO4UmsjD9spDH056qKHW8CAx_Oot5sBTvTfEqE-d6y-nlLt7viS4y1QTVsM5E9LBWpUpjdRN9m91JvJPb1_sGVtou0q4pjpKDbi8gi4qaOWv3qVdG4RXfEHob6CekfwEvHgzE9TVI2eGxDtVed7mqvuPsHtfJgsIOroF1b2JtdfjWut_CRsWau40KutWzaME7BTnbWuw0PMka4MLK96z1w3nuOe52alpG1-KW5dLP-JFtJAJtBO2ZW1m3evIkAE_JB-a6Husv4eNyZ1S_Qy9p2FxVpyWH4n-wZFdMUmP4ZzR95Y6_sNcKV7FK3a_ejHwcjTW5OcbxQ6GqMG01k-RiDQU3FUWUUFG7NjKFcL6dHwpu2kUC60E2zw7FEtv6B9o",
+    "refresh_token": "Atzr|IwEBIKS2OgOUs8W6UMyAy0bDB2VWYd_pxoyLfsgHwyuk7NI3Zm0kSk81lz8JL4hCPzvTaPQgxngdSXjvMs5Q2ahjx5frYPz6MT5MsJclBB1DQCAar4ImLxxHxs-76-896Qbwod2XK82-fF_g245FJhN2pDAhdYQwSBjf81fA3eO8LUDY3gmYoOedhkHfbcWTacxK-Ed6LZ4tY5JeOKiNfaMAGYs5f14v3gq7TyihqpL30sJQYbWTUXRIEie5toh7eipTm6-soxtaLN86jqDK_JvxGY_UjJYlQ4mKpT0hmeu-Q4Iqr97VpC1fKZ41yjIOZduhVhk0VO2PXPggJtU2nm8CnxU8LWy6NG4FnpTf0d9BH_clJqk6XCclupd9kW_fssvGvp3F3UV7iRZCDnQkC5baekxCVwnpuDpBm0HBtXcQRpcrdoC6DFh0z2gA6uyDeTIGe-iNePB4kwkmBWLwcAh6uKYlhCCLfciDLEi5Uecw6i58RWlunwY6MU2-cOddHIhFaEDGUoOoPfONHi2eMnQBjIPx0ZFBw0vPhPrkc9Ag4SHV4w",
+    "token_type": "bearer",
+    "expires_in": 3600,
+    "client_id": "amzn1.application-oa2-client.0e303b23fb394e9991cb2822d26e51fa",
+    "client_secret": "5fce0d3f2ee573fc74faa8a93c898a3badd2bf27d7151b518e2e73b14c2c6668",
+    "s_audio_path": "/root/.Alexa/audio/send/",
+    "r_audio_path": "/root/.Alexa/audio/recivied/",
+    "sys_audio_path": "/root/.Alexa/src/audio/"
+}
