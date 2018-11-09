@@ -14,7 +14,7 @@ int main(int argc,char *argv[])//使用libcurl的multi interface实现和亚马�
     /*********WIDORA DEBUG************/
     // system("export PA_ALSA_PLUGHW=1");
     // system("mpc volume 95");
-    // system("mpc update");
+    system("mpc update");
     /*********************************/
 
     curl_global_init(CURL_GLOBAL_ALL);
@@ -27,7 +27,7 @@ int main(int argc,char *argv[])//使用libcurl的multi interface实现和亚马�
     DownParams *params = new DownParams;
     
     /*********WIDORA DEBUG************/
-    // bool welcome_flag = true;
+    bool welcome_flag = true;
     /*********************************/
 
     char cmd[10] = {0};
@@ -44,13 +44,12 @@ int main(int argc,char *argv[])//使用libcurl的multi interface实现和亚马�
     struct curl_slist *TokenHead=NULL;
     struct curl_httppost *postFirst = NULL,*postLast = NULL;
 
-    Alexa alexa;
 
+    Alexa alexa;
     alexa.getWorkdir();
     alexa.ReadDeviceinfo();
     alexa.Readtoken();
     alexa.init();
-
 
     curl_multi_setopt(multi_handles,CURLMOPT_PIPELINING,CURLPIPE_MULTIPLEX);//链接复用
 
@@ -265,14 +264,14 @@ int main(int argc,char *argv[])//使用libcurl的multi interface实现和亚马�
             if(ready.FIRSTPING&&ready.SYNCHRONIZE)
             {
                 /*********WIDORA DEBUG************/
-                // if(welcome_flag == true)
-                // {
-                //     system("mpc clear");
-                //     system("mpc add welcome.mp3");
-                //     system("mpc play 1");//welcome sound
+                if(welcome_flag == true)
+                {
+                    system("mpc clear");
+                    system("mpc add welcome.mp3");
+                    system("mpc play 1");//welcome sound
 
-                //     welcome_flag = false;
-                // }
+                    welcome_flag = false;
+                }
                 /*********************************/
 
                 global_ready = true;

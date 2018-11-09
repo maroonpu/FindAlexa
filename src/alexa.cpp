@@ -535,9 +535,9 @@ void Alexa::_KeyboardInput(char* cmd)
 size_t Alexa::DownChannelParser(void *ptr, size_t size, size_t nmemb, void *pointer)
 {
     /*********WIDORA DEBUG************/
-    // system("mpc clear");
-    // system("mpc add stop.mp3");
-    // system("mpc play 1");//stop rec sound
+    system("mpc clear");
+    system("mpc add stop.mp3");
+    system("mpc play 1");//stop rec sound
     /*********************************/
 
     cout<<"---------------W-R-I-T-I-N-G-----------------"<<endl;
@@ -920,6 +920,7 @@ void Alexa::stopCapture()
 
 void Alexa::init()//功能初始化
 {
+    //problem
 
 
     devices = device;
@@ -930,15 +931,23 @@ void Alexa::init()//功能初始化
         cout<<"PortAudio init error: "<<Pa_GetErrorText(err)<<endl;
         exit(1);
     }
-
+cout<<"one1"<<endl;
 
     PaStreamParameters inputParameters;
-
+cout<<"one2"<<endl;
     inputParameters.device=devices.useDeviceNum;//声卡设备号
+    cout<<"one3"<<endl;
     inputParameters.channelCount=1;//声道数
+    cout<<"one4"<<endl;
     inputParameters.sampleFormat=paInt16;//PCM格式
+    cout<<"one5"<<endl;
+    cout<<Pa_GetDeviceInfo(inputParameters.device)<<endl;
+    cout<<"one6"<<endl;
     inputParameters.suggestedLatency=Pa_GetDeviceInfo(inputParameters.device)->defaultLowInputLatency;
+    cout<<"one7"<<endl;
     inputParameters.hostApiSpecificStreamInfo=NULL;
+
+cout<<"one8"<<endl;
 
     err = Pa_OpenStream(
                 &stream,
