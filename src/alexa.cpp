@@ -16,72 +16,75 @@ Modified BY Maroonpu @20181109
 #include <thread>
 #include <sys/ioctl.h>
 
+#define IS_WIDORA      0    //1 for WIDORA compile, 1 for PC 
+
+
 /*********WIDORA DEBUG************/
-// // GPIO
-// #include <stdint.h>
-// #include <stdlib.h>
-// #include <sys/mman.h>
-// #include <sys/types.h>
-// #include <sys/stat.h>
-// #include <fcntl.h>
-// #include <wait.h>
+// GPIO
+#include <stdint.h>
+#include <stdlib.h>
+#include <sys/mman.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <wait.h>
 
-// // GPIO
-// #define MMAP_PATH   "/dev/mem"
+// GPIO
+#define MMAP_PATH   "/dev/mem"
 
-// #define RALINK_GPIO_DIR_IN      0
-// #define RALINK_GPIO_DIR_OUT     1
+#define RALINK_GPIO_DIR_IN      0
+#define RALINK_GPIO_DIR_OUT     1
 
-// #define RALINK_REG_PIOINT       0x690
-// #define RALINK_REG_PIOEDGE      0x6A0
-// #define RALINK_REG_PIORENA      0x650
-// #define RALINK_REG_PIOFENA      0x660
-// #define RALINK_REG_PIODATA      0x620
-// #define RALINK_REG_PIODIR       0x600
-// #define RALINK_REG_PIOSET       0x630
-// #define RALINK_REG_PIORESET     0x640
+#define RALINK_REG_PIOINT       0x690
+#define RALINK_REG_PIOEDGE      0x6A0
+#define RALINK_REG_PIORENA      0x650
+#define RALINK_REG_PIOFENA      0x660
+#define RALINK_REG_PIODATA      0x620
+#define RALINK_REG_PIODIR       0x600
+#define RALINK_REG_PIOSET       0x630
+#define RALINK_REG_PIORESET     0x640
 
-// #define RALINK_REG_PIO6332INT       0x694
-// #define RALINK_REG_PIO6332EDGE      0x6A4
-// #define RALINK_REG_PIO6332RENA      0x654
-// #define RALINK_REG_PIO6332FENA      0x664
-// #define RALINK_REG_PIO6332DATA      0x624
-// #define RALINK_REG_PIO6332DIR       0x604
-// #define RALINK_REG_PIO6332SET       0x634
-// #define RALINK_REG_PIO6332RESET     0x644
+#define RALINK_REG_PIO6332INT       0x694
+#define RALINK_REG_PIO6332EDGE      0x6A4
+#define RALINK_REG_PIO6332RENA      0x654
+#define RALINK_REG_PIO6332FENA      0x664
+#define RALINK_REG_PIO6332DATA      0x624
+#define RALINK_REG_PIO6332DIR       0x604
+#define RALINK_REG_PIO6332SET       0x634
+#define RALINK_REG_PIO6332RESET     0x644
 
-// #define RALINK_REG_PIO9564INT       0x698
-// #define RALINK_REG_PIO9564EDGE      0x6A8
-// #define RALINK_REG_PIO9564RENA      0x658
-// #define RALINK_REG_PIO9564FENA      0x668
-// #define RALINK_REG_PIO9564DATA      0x628
-// #define RALINK_REG_PIO9564DIR       0x608
-// #define RALINK_REG_PIO9564SET       0x638
-// #define RALINK_REG_PIO9564RESET     0x648
+#define RALINK_REG_PIO9564INT       0x698
+#define RALINK_REG_PIO9564EDGE      0x6A8
+#define RALINK_REG_PIO9564RENA      0x658
+#define RALINK_REG_PIO9564FENA      0x668
+#define RALINK_REG_PIO9564DATA      0x628
+#define RALINK_REG_PIO9564DIR       0x608
+#define RALINK_REG_PIO9564SET       0x638
+#define RALINK_REG_PIO9564RESET     0x648
 
-// /*******************主函数宏定义**********************/  
-// #define FUNC_IDLE_EVENT                             0x00        //空闲  
-// #define START_FUNC_GUA_KEY_SHORT_EVENT              0x10        //短按键处理事件  
-// #define FUNC_GUA_KEY_LONG_EVENT                     0x11        //长按键处理事件
-// #define VOLUP_FUNC_GUA_KEY_SHORT_EVENT              0x12        //短按键处理事件  
-// #define VOLDOWN_FUNC_GUA_KEY_SHORT_EVENT            0x13        //短按键处理事件  
+/*******************主函数宏定义**********************/  
+#define FUNC_IDLE_EVENT                             0x00        //空闲  
+#define START_FUNC_GUA_KEY_SHORT_EVENT              0x10        //短按键处理事件  
+#define FUNC_GUA_KEY_LONG_EVENT                     0x11        //长按键处理事件
+#define VOLUP_FUNC_GUA_KEY_SHORT_EVENT              0x12        //短按键处理事件  
+#define VOLDOWN_FUNC_GUA_KEY_SHORT_EVENT            0x13        //短按键处理事件  
 
-// /*********************宏定义************************/  
-// //按键的触发状态  
-// #define KEY_STATUS_IDLE                             0           //按键没触发  
-// #define KEY_STATUS_TRIGGER_SHORT                    1           //短按键触发  
-// #define KEY_STATUS_TRIGGER_LONG                     2           //长按键触发  
-// #define KEY_STATUS_NO_LOOSEN                        3           //长按键触发后未松开  
+/*********************宏定义************************/  
+//按键的触发状态  
+#define KEY_STATUS_IDLE                             0           //按键没触发  
+#define KEY_STATUS_TRIGGER_SHORT                    1           //短按键触发  
+#define KEY_STATUS_TRIGGER_LONG                     2           //长按键触发  
+#define KEY_STATUS_NO_LOOSEN                        3           //长按键触发后未松开  
 
-// //按键触发宏  
-// #define KEY_TRIGGER                                 0           //低电平触发  
+//按键触发宏  
+#define KEY_TRIGGER                                 0           //低电平触发  
   
-// //按键消抖宏  
-// #define KEY_DISAPPEARS_SHAKES_SHORT_COUNT           500000      //短按键消抖数，约xms(估值)  
-// #define KEY_DISAPPEARS_SHAKES_LONG_COUNT            10000000    //长按键消抖数，约xS (估值)
+//按键消抖宏  
+#define KEY_DISAPPEARS_SHAKES_SHORT_COUNT           500000      //短按键消抖数，约xms(估值)  
+#define KEY_DISAPPEARS_SHAKES_LONG_COUNT            10000000    //长按键消抖数，约xS (估值)
   
-// /*********************内部变量************************/  
-// static unsigned long sKey_DisappearsShakes_TriggerCount = 0;    //消抖时的触发状态计数值  
+/*********************内部变量************************/  
+static unsigned long sKey_DisappearsShakes_TriggerCount = 0;    //消抖时的触发状态计数值  
 
 /*********************************/
 
@@ -98,6 +101,7 @@ queue<vector<char>> blocks;
 const int MaxBlock = 512;
 
 
+
 struct WriteThis {
   const char *readptr;
   long sizeleft;
@@ -110,6 +114,7 @@ int Alexa::writeAudio = 1;
 int uploadCount = 0;
 int rec_status = 0;
 
+//GPIO
 uint8_t* gpio_mmap_reg = NULL;
 int gpio_mmap_fd = 0;
 
@@ -155,8 +160,8 @@ size_t Upload(void *ptr, ALEXA_DEVICE devices)
 }
 
 //音频分块上传回调函数
-size_t Alexa::trunkUpload(void *ptr) {
-
+size_t Alexa::trunkUpload(void *ptr) 
+{
 //    ALEXA_DEVICE device = ReadDeviceinfo(getWorkdir());
 //    等待一小段时间，同步采样和上传速度
 //    usleep(35000);
@@ -229,153 +234,153 @@ size_t Alexa::ReWriteConfig(void *ptr)
 
 /*********WIDORA DEBUG************/
 
-// int gpio_mmap(void)
-// {
-//     if ((gpio_mmap_fd = open(MMAP_PATH, O_RDWR)) < 0) {
-//         fprintf(stderr, "unable to open mmap file");
-//         return -1;
-//     }
+int gpio_mmap(void)
+{
+    if ((gpio_mmap_fd = open(MMAP_PATH, O_RDWR)) < 0) {
+        fprintf(stderr, "unable to open mmap file");
+        return -1;
+    }
 
-//     gpio_mmap_reg = (uint8_t*) mmap(NULL, 1024, PROT_READ | PROT_WRITE,
-//         MAP_FILE | MAP_SHARED, gpio_mmap_fd, 0x10000000);
-//     if (gpio_mmap_reg == MAP_FAILED) {
-//         perror("foo");
-//         fprintf(stderr, "failed to mmap");
-//         gpio_mmap_reg = NULL;
-//         close(gpio_mmap_fd);
-//         return -1;
-//     }
+    gpio_mmap_reg = (uint8_t*) mmap(NULL, 1024, PROT_READ | PROT_WRITE,
+        MAP_FILE | MAP_SHARED, gpio_mmap_fd, 0x10000000);
+    if (gpio_mmap_reg == MAP_FAILED) {
+        perror("foo");
+        fprintf(stderr, "failed to mmap");
+        gpio_mmap_reg = NULL;
+        close(gpio_mmap_fd);
+        return -1;
+    }
 
-//     return 0;
-// }
+    return 0;
+}
 
-// int mt76x8_gpio_get_pin(int pin)
-// {
-//     uint32_t tmp = 0;
+int mt76x8_gpio_get_pin(int pin)
+{
+    uint32_t tmp = 0;
 
-//     /* MT7621, MT7628 */
-//     if (pin <= 31) {
-//         tmp = *(volatile uint32_t *)(gpio_mmap_reg + RALINK_REG_PIODATA);
-//         tmp = (tmp >> pin) & 1u;
-//     } else if (pin <= 63) {
-//         tmp = *(volatile uint32_t *)(gpio_mmap_reg + RALINK_REG_PIO6332DATA);
-//         tmp = (tmp >> (pin-32)) & 1u;
-//     } else if (pin <= 95) {
-//         tmp = *(volatile uint32_t *)(gpio_mmap_reg + RALINK_REG_PIO9564DATA);
-//         tmp = (tmp >> (pin-64)) & 1u;
-//         tmp = (tmp >> (pin-24)) & 1u;
-//     }
-//     return tmp;
+    /* MT7621, MT7628 */
+    if (pin <= 31) {
+        tmp = *(volatile uint32_t *)(gpio_mmap_reg + RALINK_REG_PIODATA);
+        tmp = (tmp >> pin) & 1u;
+    } else if (pin <= 63) {
+        tmp = *(volatile uint32_t *)(gpio_mmap_reg + RALINK_REG_PIO6332DATA);
+        tmp = (tmp >> (pin-32)) & 1u;
+    } else if (pin <= 95) {
+        tmp = *(volatile uint32_t *)(gpio_mmap_reg + RALINK_REG_PIO9564DATA);
+        tmp = (tmp >> (pin-64)) & 1u;
+        tmp = (tmp >> (pin-24)) & 1u;
+    }
+    return tmp;
 
-// }
+}
 
-// void mt76x8_gpio_set_pin_direction(int pin, int is_output)
-// {
-//     uint32_t tmp;
+void mt76x8_gpio_set_pin_direction(int pin, int is_output)
+{
+    uint32_t tmp;
 
-//     /* MT7621, MT7628 */
-//     if (pin <= 31) {
-//         tmp = *(volatile uint32_t *)(gpio_mmap_reg + RALINK_REG_PIODIR);
-//         if (is_output)
-//             tmp |=  (1u << pin);
-//         else
-//             tmp &= ~(1u << pin);
-//         *(volatile uint32_t *)(gpio_mmap_reg + RALINK_REG_PIODIR) = tmp;
-//     } else if (pin <= 63) {
-//         tmp = *(volatile uint32_t *)(gpio_mmap_reg + RALINK_REG_PIO6332DIR);
-//         if (is_output)
-//             tmp |=  (1u << (pin-32));
-//         else
-//             tmp &= ~(1u << (pin-32));
-//         *(volatile uint32_t *)(gpio_mmap_reg + RALINK_REG_PIO6332DIR) = tmp;
-//     } else if (pin <= 95) {
-//         tmp = *(volatile uint32_t *)(gpio_mmap_reg + RALINK_REG_PIO9564DIR);
-//         if (is_output)
-//             tmp |=  (1u << (pin-64));
-//         else
-//             tmp &= ~(1u << (pin-64));
-//         *(volatile uint32_t *)(gpio_mmap_reg + RALINK_REG_PIO9564DIR) = tmp;
-//     }
-// }
+    /* MT7621, MT7628 */
+    if (pin <= 31) {
+        tmp = *(volatile uint32_t *)(gpio_mmap_reg + RALINK_REG_PIODIR);
+        if (is_output)
+            tmp |=  (1u << pin);
+        else
+            tmp &= ~(1u << pin);
+        *(volatile uint32_t *)(gpio_mmap_reg + RALINK_REG_PIODIR) = tmp;
+    } else if (pin <= 63) {
+        tmp = *(volatile uint32_t *)(gpio_mmap_reg + RALINK_REG_PIO6332DIR);
+        if (is_output)
+            tmp |=  (1u << (pin-32));
+        else
+            tmp &= ~(1u << (pin-32));
+        *(volatile uint32_t *)(gpio_mmap_reg + RALINK_REG_PIO6332DIR) = tmp;
+    } else if (pin <= 95) {
+        tmp = *(volatile uint32_t *)(gpio_mmap_reg + RALINK_REG_PIO9564DIR);
+        if (is_output)
+            tmp |=  (1u << (pin-64));
+        else
+            tmp &= ~(1u << (pin-64));
+        *(volatile uint32_t *)(gpio_mmap_reg + RALINK_REG_PIO9564DIR) = tmp;
+    }
+}
 
-// void mt76x8_gpio_set_pin_value(int pin, int value)
-// {
-//     uint32_t tmp;
+void mt76x8_gpio_set_pin_value(int pin, int value)
+{
+    uint32_t tmp;
 
-//     /* MT7621, MT7628 */
-//     if (pin <= 31) {
-//         tmp = (1u << pin);
-//         if (value)
-//             *(volatile uint32_t *)(gpio_mmap_reg + RALINK_REG_PIOSET) = tmp;
-//         else
-//             *(volatile uint32_t *)(gpio_mmap_reg + RALINK_REG_PIORESET) = tmp;
-//     } else if (pin <= 63) {
-//         tmp = (1u << (pin-32));
-//         if (value)
-//             *(volatile uint32_t *)(gpio_mmap_reg + RALINK_REG_PIO6332SET) = tmp;
-//         else
-//             *(volatile uint32_t *)(gpio_mmap_reg + RALINK_REG_PIO6332RESET) = tmp;
-//     } else if (pin <= 95) {
-//         tmp = (1u << (pin-64));
-//         if (value)
-//             *(volatile uint32_t *)(gpio_mmap_reg + RALINK_REG_PIO9564SET) = tmp;
-//         else
-//             *(volatile uint32_t *)(gpio_mmap_reg + RALINK_REG_PIO9564RESET) = tmp;
-//     }
-// }
+    /* MT7621, MT7628 */
+    if (pin <= 31) {
+        tmp = (1u << pin);
+        if (value)
+            *(volatile uint32_t *)(gpio_mmap_reg + RALINK_REG_PIOSET) = tmp;
+        else
+            *(volatile uint32_t *)(gpio_mmap_reg + RALINK_REG_PIORESET) = tmp;
+    } else if (pin <= 63) {
+        tmp = (1u << (pin-32));
+        if (value)
+            *(volatile uint32_t *)(gpio_mmap_reg + RALINK_REG_PIO6332SET) = tmp;
+        else
+            *(volatile uint32_t *)(gpio_mmap_reg + RALINK_REG_PIO6332RESET) = tmp;
+    } else if (pin <= 95) {
+        tmp = (1u << (pin-64));
+        if (value)
+            *(volatile uint32_t *)(gpio_mmap_reg + RALINK_REG_PIO9564SET) = tmp;
+        else
+            *(volatile uint32_t *)(gpio_mmap_reg + RALINK_REG_PIO9564RESET) = tmp;
+    }
+}
 
 
-// //******************************************************************************                
-// //name:             Key_Scan               
-// //introduce:        按键检测触发状态            
-// //parameter:        Pin      
-// //return:           KEY_STATUS_IDLE or KEY_STATUS_TRIGGER_SHORT or KEY_STATUS_TRIGGER_LONG or KEY_STATUS_NO_LOOSEN               
-// //changetime:       2018.04.08                        
-// //******************************************************************************    
-// unsigned char Key_Scan(int Pin)      
-// {      
-//     //触发  
-//     if(mt76x8_gpio_get_pin(Pin) == KEY_TRIGGER)   
-//     {  
-//         //如果上一次按键是长按键结束的，需要检测到松开方可开始下一次计数  
-//         if(sKey_DisappearsShakes_TriggerCount >= KEY_DISAPPEARS_SHAKES_LONG_COUNT)  
-//         {      
-//             return KEY_STATUS_NO_LOOSEN;  
-//         }  
+//******************************************************************************                
+//name:             Key_Scan               
+//introduce:        按键检测触发状态            
+//parameter:        Pin      
+//return:           KEY_STATUS_IDLE or KEY_STATUS_TRIGGER_SHORT or KEY_STATUS_TRIGGER_LONG or KEY_STATUS_NO_LOOSEN               
+//changetime:       2018.04.08                        
+//******************************************************************************    
+unsigned char Key_Scan(int Pin)      
+{      
+    //触发  
+    if(mt76x8_gpio_get_pin(Pin) == KEY_TRIGGER)   
+    {  
+        //如果上一次按键是长按键结束的，需要检测到松开方可开始下一次计数  
+        if(sKey_DisappearsShakes_TriggerCount >= KEY_DISAPPEARS_SHAKES_LONG_COUNT)  
+        {      
+            return KEY_STATUS_NO_LOOSEN;  
+        }  
 
-//         //计数  
-//         sKey_DisappearsShakes_TriggerCount++;  
+        //计数  
+        sKey_DisappearsShakes_TriggerCount++;  
 
-//         //判断计数是否足够  
-//         while(sKey_DisappearsShakes_TriggerCount >= KEY_DISAPPEARS_SHAKES_SHORT_COUNT)  
-//         {  
-//             //检测到松开、超时的时候，则处理  
-//             if((mt76x8_gpio_get_pin(Pin) != KEY_TRIGGER) || (sKey_DisappearsShakes_TriggerCount >= KEY_DISAPPEARS_SHAKES_LONG_COUNT))  
-//             {  
-//                 //长按键时  
-//                 if(sKey_DisappearsShakes_TriggerCount >= KEY_DISAPPEARS_SHAKES_LONG_COUNT)  
-//                 {            
-//                     return KEY_STATUS_TRIGGER_LONG;                           
-//                 }  
-//                 //短按键时  
-//                 else  
-//                 {           
-//                     return KEY_STATUS_TRIGGER_SHORT;                            
-//                 }  
-//             }  
+        //判断计数是否足够  
+        while(sKey_DisappearsShakes_TriggerCount >= KEY_DISAPPEARS_SHAKES_SHORT_COUNT)  
+        {  
+            //检测到松开、超时的时候，则处理  
+            if((mt76x8_gpio_get_pin(Pin) != KEY_TRIGGER) || (sKey_DisappearsShakes_TriggerCount >= KEY_DISAPPEARS_SHAKES_LONG_COUNT))  
+            {  
+                //长按键时  
+                if(sKey_DisappearsShakes_TriggerCount >= KEY_DISAPPEARS_SHAKES_LONG_COUNT)  
+                {            
+                    return KEY_STATUS_TRIGGER_LONG;                           
+                }  
+                //短按键时  
+                else  
+                {           
+                    return KEY_STATUS_TRIGGER_SHORT;                            
+                }  
+            }  
 
-//             //继续计数用来判断长短按键  
-//             sKey_DisappearsShakes_TriggerCount++;        
-//         }      
-//     }  
-//     //未触发  
-//     else  
-//     {  
-//         sKey_DisappearsShakes_TriggerCount = 0;   
-//     }  
+            //继续计数用来判断长短按键  
+            sKey_DisappearsShakes_TriggerCount++;        
+        }      
+    }  
+    //未触发  
+    else  
+    {  
+        sKey_DisappearsShakes_TriggerCount = 0;   
+    }  
 
-//     return KEY_STATUS_IDLE;    
-// }   
+    return KEY_STATUS_IDLE;    
+}   
 
 /*********************************/
 
@@ -388,162 +393,155 @@ void Alexa::KeyboardInput(char* cmd)
 }
 
 /***********PC DEBUG**************/
-void Alexa::_KeyboardInput(char* cmd)
-{
-    while(1){
-        cin>>cmd;
-    }
+// void Alexa::_KeyboardInput(char* cmd)
+// {
+//     while(1){
+//         cin>>cmd;
+//     }
 
-}
+// }
 /*********************************/
 
 
 /*********WIDORA DEBUG************/
-// void Alexa::_KeyboardInput(char* cmd)
-// {
-//     // while(1){
-//     //     cin>>cmd;
-//     // }
+void Alexa::_KeyboardInput(char* cmd)
+{
 
-//     // int ret = -1;
+/************PC DEBUG************/
+    if(!IS_WIDORA){
+        while(1){
+            cin>>cmd;
+        }
+    }
 
-//     // if (gpio_mmap())
-//     //     return -1;
-//     gpio_mmap();
+/*********WIDORA DEBUG************/
+    gpio_mmap();
 
-//     unsigned char gGUA_Function = 0;
-//     unsigned char nRet = 0;
-//     // unsigned char volUpRet = 0;
-//     // unsigned char volDownRet = 0;
-//     while (1)
-//     {
+    unsigned char gGUA_Function = 0;
+    unsigned char nRet = 0;
+    // unsigned char volUpRet = 0;
+    // unsigned char volDownRet = 0;
+    while (1)
+    {
 
-//         switch(gGUA_Function)  
-//         {  
-//             //空闲  
-//             case FUNC_IDLE_EVENT:   
-//             {                
-//                 //检测按键当前状态  
-//                 nRet = Key_Scan(14);
-//                 // volUpRet = Key_Scan(15);
-//                 // volDownRet = Key_Scan(16);
+        switch(gGUA_Function)  
+        {  
+            //空闲  
+            case FUNC_IDLE_EVENT:   
+            {                
+                //检测按键当前状态  
+                nRet = Key_Scan(14);
+                // volUpRet = Key_Scan(15);
+                // volDownRet = Key_Scan(16);
 
-//                 //短按键触发时  
-//                 if(nRet == KEY_STATUS_TRIGGER_SHORT)  
-//                 {  
-//                     gGUA_Function = START_FUNC_GUA_KEY_SHORT_EVENT;    
-//                 }  
-//                 //长按键触发时  
-//                 else if(nRet == KEY_STATUS_TRIGGER_LONG)  
-//                 {  
-//                     gGUA_Function = FUNC_GUA_KEY_LONG_EVENT;                 
-//                 }  
-//                 // if(volUpRet == KEY_STATUS_TRIGGER_SHORT)  
-//                 // {  
-//                 //     gGUA_Function = VOLUP_FUNC_GUA_KEY_SHORT_EVENT;    
-//                 // } 
+                //短按键触发时  
+                if(nRet == KEY_STATUS_TRIGGER_SHORT)  
+                {  
+                    gGUA_Function = START_FUNC_GUA_KEY_SHORT_EVENT;    
+                }  
+                //长按键触发时  
+                else if(nRet == KEY_STATUS_TRIGGER_LONG)  
+                {  
+                    gGUA_Function = FUNC_GUA_KEY_LONG_EVENT;                 
+                }  
+                // if(volUpRet == KEY_STATUS_TRIGGER_SHORT)  
+                // {  
+                //     gGUA_Function = VOLUP_FUNC_GUA_KEY_SHORT_EVENT;    
+                // } 
 
-//                 // if(volDownRet == KEY_STATUS_TRIGGER_SHORT)  
-//                 // {  
-//                 //     gGUA_Function = VOLDOWN_FUNC_GUA_KEY_SHORT_EVENT;    
-//                 // }  
+                // if(volDownRet == KEY_STATUS_TRIGGER_SHORT)  
+                // {  
+                //     gGUA_Function = VOLDOWN_FUNC_GUA_KEY_SHORT_EVENT;    
+                // }  
 
-//                 break;            
-//             }  
+                break;            
+            }  
 
-//             //短按键处理  
-//             case START_FUNC_GUA_KEY_SHORT_EVENT:   
-//             {
-//                 // printf("short press\n");
-//                 cout<<"short press"<<endl;
-//                 // start recording
-//                 system("mpc clear");
-//                 system("mpc add start.mp3");
-//                 system("mpc play 1");//start rec sound
+            //短按键处理  
+            case START_FUNC_GUA_KEY_SHORT_EVENT:   
+            {
+                // printf("short press\n");
+                cout<<"short press"<<endl;
+                // start recording
+                system("mpc clear");
+                system("mpc add start.mp3");
+                system("mpc play 1");//start rec sound
 
-//                 cmd[0] = 'b';
-//                 //返回空闲状态  
-//                 gGUA_Function = FUNC_IDLE_EVENT;    
-//                 break;                 
-//             }    
+                cmd[0] = 'b';
+                //返回空闲状态  
+                gGUA_Function = FUNC_IDLE_EVENT;    
+                break;                 
+            }    
 
-//             // case VOLUP_FUNC_GUA_KEY_SHORT_EVENT:   
-//             // {
-//             //     // printf("short press\n");
-//             //     cout<<"short press"<<endl;
-//             //     // start recording
-//             //     // system("mpc clear");
-//             //     // system("mpc add start.mp3");
-//             //     system("mpc play 1");//start rec sound
+            // case VOLUP_FUNC_GUA_KEY_SHORT_EVENT:   
+            // {
+            //     // printf("short press\n");
+            //     cout<<"short press"<<endl;
+            //     // start recording
+            //     // system("mpc clear");
+            //     // system("mpc add start.mp3");
+            //     system("mpc play 1");//start rec sound
 
-//             //     // cmd[0] = 'b';
-//             //     //返回空闲状态  
-//             //     gGUA_Function = FUNC_IDLE_EVENT;    
-//             //     break;                 
-//             // }         
+            //     // cmd[0] = 'b';
+            //     //返回空闲状态  
+            //     gGUA_Function = FUNC_IDLE_EVENT;    
+            //     break;                 
+            // }         
 
-//             // case VOLDOWN_FUNC_GUA_KEY_SHORT_EVENT:   
-//             // {
-//             //     // printf("short press\n");
-//             //     cout<<"short press"<<endl;
-//             //     // start recording
-//             //     // system("mpc clear");
-//             //     // system("mpc add start.mp3");
-//             //     system("mpc volume +10");//start rec sound
+            // case VOLDOWN_FUNC_GUA_KEY_SHORT_EVENT:   
+            // {
+            //     // printf("short press\n");
+            //     cout<<"short press"<<endl;
+            //     // start recording
+            //     // system("mpc clear");
+            //     // system("mpc add start.mp3");
+            //     system("mpc volume +10");//start rec sound
 
-//             //     // cmd[0] = 'b';
-//             //     //返回空闲状态  
-//             //     gGUA_Function = FUNC_IDLE_EVENT;    
-//             //     break;                 
-//             // }         
+            //     // cmd[0] = 'b';
+            //     //返回空闲状态  
+            //     gGUA_Function = FUNC_IDLE_EVENT;    
+            //     break;                 
+            // }         
 
-//             //长按键处理  
-//             case FUNC_GUA_KEY_LONG_EVENT:   
-//             {  
-//                 cout<<"long press"<<endl;
-//                 //enter network connet mode
-//                 // printf("long press\n");
-//    // thread p4(&upmpdcliplay,  cmd);//创建新的线程检测输入，避免主线程阻塞
-//    // p4.detach();
+            //长按键处理  
+            case FUNC_GUA_KEY_LONG_EVENT:   
+            {  
+                cout<<"long press"<<endl;
+                //enter network connet mode
+                // printf("long press\n");
 
+                //返回空闲状态  
+                gGUA_Function = FUNC_IDLE_EVENT;    
+                break;                 
+            }    
 
-//                 //返回空闲状态  
-//                 gGUA_Function = FUNC_IDLE_EVENT;    
-//                 break;                 
-//             }    
+            //其他  
+            default:   
+            {  
+                //返回空闲状态  
+                gGUA_Function = FUNC_IDLE_EVENT;                                       
+                break;             
+            }                       
+        }                       
 
-//             //其他  
-//             default:   
-//             {  
-//                 //返回空闲状态  
-//                 gGUA_Function = FUNC_IDLE_EVENT;                                       
-//                 break;             
-//             }                       
-//         }                       
+    }
+    close(gpio_mmap_fd);
 
-//     }
-//     close(gpio_mmap_fd);
-
-//     // return ret;        
-
-// }
-
-/*********************************/
+}
 
 
 //回调函数，接收Downchannel链接收到的数据并解析，目前仅能解析StopCapture信息，其它待增加
 size_t Alexa::DownChannelParser(void *ptr, size_t size, size_t nmemb, void *pointer)
 {
-    /*********WIDORA DEBUG************/
+
     system("mpc clear");
     system("mpc add stop.mp3");
     system("mpc play 1");//stop rec sound
-    /*********************************/
 
     cout<<"---------------W-R-I-T-I-N-G-----------------"<<endl;
     char *p1 = strstr((char*)ptr,"Content-Type: application/json");
     p1 = p1 + 32;
-    char *p2 = strstr(p1,"--");
+    char *p2 = strstr((char*)p1,"--");
     memset(p2,'\0',1);
 
     DownParams * params = (DownParams*)pointer;
@@ -559,8 +557,8 @@ size_t Alexa::DownChannelParser(void *ptr, size_t size, size_t nmemb, void *poin
     return size*nmemb;
 }
 
-/**********Skill Interface********/
 
+/**********Skill Interface********/
 // //Alexa Skill interface
 // string Alexa::Skill(string directiveJson)
 // {
@@ -676,6 +674,7 @@ string Alexa::Parser(string &json)//,string &orderFlag)
         }
     }
 
+    // // call alexa skill 
     // orderFlag = Skill(json);
 
     string path = config.r_audio_path + nowtime + ".mp3";
@@ -706,7 +705,7 @@ string Alexa::Parser(string &json)//,string &orderFlag)
     fin.close();
 
     string shortPath = nowtime + ".mp3";
-    return shortPath;
+    return shortPath; // relative address
     // return path;
 }
 
@@ -873,18 +872,6 @@ void Alexa::SendAudioFile(CURL *curl,struct curl_slist *header,curl_httppost *po
 }
 
 
-
-
-
-
-//音频采集函数
-//void Alexa::capture(const char *filepath)
-//{
-//    //线程
-//    thread t2(&Alexa::_capture,this,filepath);
-//    t2.detach();
-//}
-
 void Alexa::capture()
 {
     string filepath = config.s_audio_path + nowtime + ".pcm";
@@ -920,8 +907,6 @@ void Alexa::stopCapture()
 
 void Alexa::init()//功能初始化
 {
-    //problem
-
 
     devices = device;
     Workdir = workdir;
@@ -931,23 +916,15 @@ void Alexa::init()//功能初始化
         cout<<"PortAudio init error: "<<Pa_GetErrorText(err)<<endl;
         exit(1);
     }
-cout<<"one1"<<endl;
 
     PaStreamParameters inputParameters;
-cout<<"one2"<<endl;
     inputParameters.device=devices.useDeviceNum;//声卡设备号
-    cout<<"one3"<<endl;
     inputParameters.channelCount=1;//声道数
-    cout<<"one4"<<endl;
     inputParameters.sampleFormat=paInt16;//PCM格式
-    cout<<"one5"<<endl;
     cout<<Pa_GetDeviceInfo(inputParameters.device)<<endl;
-    cout<<"one6"<<endl;
     inputParameters.suggestedLatency=Pa_GetDeviceInfo(inputParameters.device)->defaultLowInputLatency;
-    cout<<"one7"<<endl;
     inputParameters.hostApiSpecificStreamInfo=NULL;
 
-cout<<"one8"<<endl;
 
     err = Pa_OpenStream(
                 &stream,

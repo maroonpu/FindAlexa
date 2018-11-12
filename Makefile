@@ -14,8 +14,8 @@ LIBS += -lcurl -lportaudio  \
         -lpthread           \
         -lasound -lm 
 
-# # pocketsphinx wake-up engine, enable if necessary
-# LIBS += -lpocketsphinx -lsphinxbase -lsphinxad 
+# # # pocketsphinx wake-up engine, enable if necessary
+# # LIBS += -lpocketsphinx -lsphinxbase -lsphinxad 
 ###########################################################
 
 #######################WIDORA DEBUG########################
@@ -34,6 +34,7 @@ all : alexa deviceinfo
 .PHONY : all
 deviceinfo : $(DIR_SRC)/info.cpp
 	$(cc) -o deviceinfo $(DIR_SRC)/info.cpp $(CPPFLAGS) $(LDFLAGS) $(LIBS)
+	# $(cc) -o deviceinfo $(DIR_SRC)/info.cpp $(CPPFLAGS) $(LDFLAGS) -lportaudio -lasound
 
 alexa : base.o alexa.o main.o  alert.o 
 	$(cc) -o alexa base.o alert.o alexa.o main.o $(CPPFLAGS) $(LDFLAGS) $(LIBS) 

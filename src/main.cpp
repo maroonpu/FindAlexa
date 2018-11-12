@@ -1,21 +1,25 @@
 #include <iostream>
 #include "include/alexa.h"
 
+#define IS_WIDORA      0    //1 for WIDORA compile, 1 for PC 
 #define MAX_WAIT_MSECS 1000
+
 using namespace std;
 
 int main(int argc,char *argv[])//使用libcurl的multi interface实现和亚马逊服务器的HTTP通信
 {
+    // widora mic and volume config
+    if(IS_WIDORA){
+        system("export PA_ALSA_PLUGHW=1");
+        system("mpc volume 95");
+    }
+    system("mpc update");
+
+    bool welcome_flag = true;
 
     //说明：
     //libcurl中每一个HTTP链接由一个easy interface来管理，对应一个easy handle
     //多个链接同时运行则由multi interface来管理，需要将各个easy handle加入multi handle中
-
-    /*********WIDORA DEBUG************/
-    // system("export PA_ALSA_PLUGHW=1");
-    // system("mpc volume 95");
-    system("mpc update");
-    /*********************************/
 
     curl_global_init(CURL_GLOBAL_ALL);
     CURLM *multi_handles = curl_multi_init();//初始化    
@@ -25,13 +29,8 @@ int main(int argc,char *argv[])//使用libcurl的multi interface实现和亚马�
     curl_off_t DLspeed;
     net_state_t netState;
     DownParams *params = new DownParams;
-    
-    /*********WIDORA DEBUG************/
-    bool welcome_flag = true;
-    /*********************************/
 
     char cmd[10] = {0};
-
 
     ALEXA_READY ready;
     bool global_ready = false;
@@ -245,6 +244,7 @@ int main(int argc,char *argv[])//使用libcurl的multi interface实现和亚马�
                         alexa.SetDownChannel(handles[DOWN_HANDLE],DownHead, params);
                         curl_multi_add_handle(multi_handles,handles[DOWN_HANDLE]);
 
+
                         alexa.Synchronize(handles[EVENT_HANDLE],SynHead,postFirst,postLast);
                         curl_multi_add_handle(multi_handles,handles[EVENT_HANDLE]);
 
@@ -263,7 +263,6 @@ int main(int argc,char *argv[])//使用libcurl的multi interface实现和亚马�
         if(!global_ready)
             if(ready.FIRSTPING&&ready.SYNCHRONIZE)
             {
-                /*********WIDORA DEBUG************/
                 if(welcome_flag == true)
                 {
                     system("mpc clear");
@@ -272,7 +271,7 @@ int main(int argc,char *argv[])//使用libcurl的multi interface实现和亚马�
 
                     welcome_flag = false;
                 }
-                /*********************************/
+
 
                 global_ready = true;
                 cout<<"#############################################"<<"\n";
@@ -281,19 +280,17 @@ int main(int argc,char *argv[])//使用libcurl的multi interface实现和亚马�
                 cout<<"############## ALEXA IS READY ###############"<<"\n";
                 cout<<"USAGE:"<<"\n";
 
-                /*********WIDORA DEBUG************/
-                // cout<<"press button to start record"<<endl;
-                /*********************************/
-
-                /***********PC DEBUG**************/
-                cout<<"\"b\":start record"<<"\n";
-                cout<<"\"q\":quit"<<endl;
-                /*********************************/
+                if(IS_WIDORA){
+                    cout<<"press button to start record"<<endl;
+                }
+                else{
+                    cout<<"\"b\":start record"<<"\n";
+                    cout<<"\"q\":quit"<<endl;
+                }
 
                 alexa.KeyboardInput(cmd);
 
             }
-
 
     }while(true);
 

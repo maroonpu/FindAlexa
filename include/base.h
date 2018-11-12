@@ -89,23 +89,20 @@ public:
     void ReadDeviceinfo();
     void Readtoken();
     void Speechinfo(std::string json);
-    void playback(std::string path);//,std::string orderFlag);
-    void playalert(std::string path);//,std::string orderFlag);
+    void playback(std::string path);
+    void playalert(std::string path);
     std::string message_id;
     std::string speak_token;
-    // int8_t FDselect();
-    // int GetNumOfAudio();
+
 protected:
-    // void Socketinit();//socket mode
     std::string workdir;
     std::string nowtime;
     ALEXA_CONFIG config; 
     ALEXA_DEVICE device;
     fd_set fds;
-    // int cli_sockdf;
-    // struct sockaddr_in ser_addr;
+
 private:
-    // int songs_num;
+
 
 };
 
@@ -115,4 +112,4 @@ void MultiMsgPt1(std::string &Pt1,struct Event EventState);
 void SpeechSynthesizer(string &Pt1, struct Event EventState);
 
 
-#endif // BASE_H
+#endif 

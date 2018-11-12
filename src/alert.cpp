@@ -3,6 +3,15 @@
 #include <time.h>
 #include <unistd.h>
 #include <thread>
+
+
+/**********************************
+   2018.11.12
+   The Alert has some problem
+
+**********************************/
+
+
 Alert::Alert()
 {
 

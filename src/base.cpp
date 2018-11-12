@@ -6,9 +6,7 @@
 
 Base::Base()
 {
-    // Base::Socketinit();
-    // close socket mode
-    // songs_num = 0;
+
 }
 
 
@@ -91,49 +89,12 @@ void Base::Speechinfo(std::string json)
     speak_token = token.GetString();
 }
 
-/********************socket mode**********************************/
-// void Base::playback(std::string path,std::string orderFlag)
-// {
-//     std::string msg = "{\"orderFlag\" : " + orderFlag +" ,\"action\" : \"playback\",\"file\":\"" + path +"\"}";
-//     send(cli_sockdf, msg.c_str(), msg.size(), 0);
-// }
 
-// void Base::playalert(std::string path,std::string orderFlag)
-// {
-//     std::string msg = "{\"orderFlag\" : " + orderFlag +" ,\"action\" : \"playalert\",\"file\":\"" + path +"\"}";
-//     send(cli_sockdf, msg.c_str(), msg.size(), 0);
-// }
-
-
-// void Base::Socketinit()
-// {
-//     cli_sockdf = socket(AF_INET, SOCK_STREAM, 0);
-//     socklen_t addrlen = sizeof(struct sockaddr_in);
-//     bzero(&ser_addr, addrlen);
-
-//     ser_addr.sin_family=AF_INET;
-//     ser_addr.sin_addr.s_addr=inet_addr("0.0.0.0");
-//     ser_addr.sin_port=htons(8002);
-//     int error = connect(cli_sockdf, (const sockaddr*)&ser_addr, addrlen);
-//     if(error < 0){
-//         cout << "Connect Error: "<<strerror(errno)<<endl;
-//         exit(1);
-//     }
-// }
-/******************************************************************/
-
-void Base::playback(std::string path)//,std::string orderFlag)
+void Base::playback(std::string path)
 {
-    // std::string msg = "{\"orderFlag\" : " + orderFlag +" ,\"action\" : \"playback\",\"file\":\"" + path +"\"}";
-    // send(cli_sockdf, msg.c_str(), msg.size(), 0);
     string del_command = "cd "+config.r_audio_path+" && ls | grep -v "+path+" | grep -v welcome.mp3 | grep -v start.mp3 | grep -v stop.mp3 | xargs rm";
-    // string del_command = "cd "+config.r_audio_path+" && sudo rm !( "+path+" )";
-
-    // cout<<"del_command::::"<<del_command<<endl;
     system(del_command.c_str());
 
-    
-    // system("mpc stop");
     system("mpc clear");
     system("mpc update");
     /*Add the audio to playlist*/       
@@ -141,63 +102,18 @@ void Base::playback(std::string path)//,std::string orderFlag)
     system(add_command.c_str());
 
     system("mpc play 1");
-    // /*Play the audio*/
-    // string song_num = "";
-    // GetNumOfAudio();
-    // stringstream ss;
-    // ss << songs_num;
-    // ss >> song_num;
-    // string song_play = "mpc play " + song_num;
-    // system(song_play.c_str());
+
     cout << "-----------------------------------开始播放-----------------------------------" << endl;
 
-    // cout<<"xiaohuihui:::"<<"cd "+config.r_audio_path+" && rm !("+path+")"<<endl;
-
-
 }
 
-/* Get the audio num by using "mpc playlist"
- */
-// int Base::GetNumOfAudio() {
-//     FILE *fp = NULL;
-//     char buffer[100];
-//     unsigned int song_num = 0;
-//     fp = popen("mpc playlist", "r");
-//     if (fp == NULL) {
-//         song_num = 0;
-//     }
-//     while(fgets(buffer, sizeof(buffer), fp)) {
-//             ++song_num;
-//     }
-//     songs_num = song_num;
-//     return song_num;
-// }
-
-
-void Base::playalert(std::string path)//,std::string orderFlag)
+// alert
+void Base::playalert(std::string path)
 {
-    // std::string msg = "{\"orderFlag\" : " + orderFlag +" ,\"action\" : \"playalert\",\"file\":\"" + path +"\"}";
-    // send(cli_sockdf, msg.c_str(), msg.size(), 0);
+    // like playback
 }
 
-// int8_t Base::FDselect()
-// {
-//     FD_ZERO(&fds);
-//     FD_SET(cli_sockdf, &fds);
-//     struct timeval timeout={0,0};
-//     int state = select(cli_sockdf+1, &fds, NULL, NULL ,&timeout);
-//     if(state>0){
-//         if(FD_ISSET(cli_sockdf, &fds)){
-//             int8_t recmsg[10];
-//             size_t recvBytes = recv(cli_sockdf, recmsg, sizeof(recmsg),0);
-//             recmsg[recvBytes] = '\0';
-//             return *recmsg;
-//         }
-//     }
-//     else{
-//         return 0;
-//     }
-// }
+
 
 void IsEndpoint(const char* json, DownParams* params)//解析StopCapture
 {

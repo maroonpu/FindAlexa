@@ -18,7 +18,7 @@ public:
     ~Alexa();
     void KeyboardInput(char* cmd);
     // string Skill(string directiveJson);
-    string Parser(string &json);//,string &orderFlag);
+    string Parser(string &json);
     void FlashToken(CURL *curl, struct curl_slist *head);
     void Synchronize(CURL *curl, struct curl_slist *sheader, curl_httppost *postFirst, curl_httppost *postLast);
     void SetDownChannel(CURL *curl, struct curl_slist *header, DownParams *params);
