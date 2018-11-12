@@ -1,4 +1,4 @@
-import os, json
+import os, json, shutil
 
 homedir =  os.path.expandvars('$HOME')
 
@@ -41,6 +41,9 @@ device_dict['RecTruckSize'] = 512
 with open(os.path.join(homedir,'.Alexa/deviceinfo.json'),'w+') as p:
     json.dump(device_dict,p,indent=4)
 
+shutil.copy("start.mp3",os.path.join(homedir,'.Alexa/audio/receive'))
+shutil.copy("stop.mp3",os.path.join(homedir,'.Alexa/audio/receive'))
+shutil.copy("welcome.mp3",os.path.join(homedir,'.Alexa/audio/receive'))
 
 print('Init Completed!\n')
 
