@@ -16,7 +16,7 @@ Modified BY Maroonpu @20181109
 #include <thread>
 #include <sys/ioctl.h>
 
-#define IS_WIDORA      0    //1 for WIDORA compile, 1 for PC 
+#define IS_WIDORA      0    //1 for WIDORA compile, 0 for PC 
 
 
 /*********WIDORA DEBUG************/
