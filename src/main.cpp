@@ -1,7 +1,7 @@
 #include <iostream>
 #include "include/alexa.h"
 
-#define IS_WIDORA      0    //1 for WIDORA compile, 1 for PC 
+#define IS_WIDORA      0    //1 for WIDORA compile, 0 for PC 
 #define MAX_WAIT_MSECS 1000
 
 using namespace std;
